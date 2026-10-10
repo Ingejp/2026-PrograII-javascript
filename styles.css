@@ -1,0 +1,391 @@
+/* ============ Variables y tema ============ */
+:root {
+  --fondo: #f5f7fb;
+  --superficie: #ffffff;
+  --texto: #1f2937;
+  --texto-suave: #6b7280;
+  --borde: #e2e8f0;
+  --primario: #4f6bff;
+  --primario-oscuro: #3a52d6;
+  --peligro: #e5484d;
+  --exito: #2fa66a;
+  --codigo-fondo: #101826;
+  --codigo-texto: #e6edf7;
+}
+
+/* Modo oscuro: lo activa app.js agregando la clase "oscuro" al body */
+body.oscuro {
+  --fondo: #0f1521;
+  --superficie: #182033;
+  --texto: #e6edf7;
+  --texto-suave: #9aa7bd;
+  --borde: #2a3550;
+  --primario: #7b92ff;
+  --primario-oscuro: #96a8ff;
+  --codigo-fondo: #0a0f1a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--fondo);
+  color: var(--texto);
+  line-height: 1.6;
+  transition: background .25s, color .25s;
+}
+
+h1, h2, h3 { line-height: 1.25; margin: 0 0 .5rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.05rem; }
+p { margin: .5rem 0 1rem; }
+hr { border: 0; border-top: 1px solid var(--borde); margin: 1.25rem 0; }
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  background: rgba(127, 140, 170, .18);
+  padding: .1em .35em;
+  border-radius: 4px;
+  font-size: .9em;
+}
+
+pre {
+  background: var(--codigo-fondo);
+  color: var(--codigo-texto);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: .88rem;
+  line-height: 1.5;
+}
+pre code { background: none; padding: 0; color: inherit; }
+
+/* ============ Cabecera y progreso ============ */
+.cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.5rem;
+  background: var(--superficie);
+  border-bottom: 1px solid var(--borde);
+}
+.cabecera h1 { font-size: 1.35rem; margin: 0; }
+.cabecera p { margin: 0; color: var(--texto-suave); font-size: .9rem; }
+.cabecera-acciones { display: flex; align-items: center; gap: .75rem; }
+.progreso-texto { color: var(--texto-suave); font-size: .9rem; }
+
+.progreso { height: 4px; background: var(--borde); }
+.progreso-barra { height: 100%; width: 0; background: var(--exito); transition: width .3s; }
+
+/* ============ Layout ============ */
+.layout {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 1.5rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.lateral {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  padding: 1rem;
+  align-self: start;
+  position: sticky;
+  top: 1rem;
+}
+.lateral h2 { font-size: 1rem; color: var(--texto-suave); text-transform: uppercase; letter-spacing: .05em; }
+
+.menu { list-style: none; margin: 0; padding: 0; display: grid; gap: .25rem; }
+.menu button {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  padding: .5rem .6rem;
+  font: inherit;
+  font-size: .92rem;
+  color: var(--texto);
+  cursor: pointer;
+}
+.menu button:hover { background: var(--fondo); }
+.menu button.activa { background: var(--primario); color: #fff; }
+.menu button.completada::after { content: " ✓"; color: var(--exito); font-weight: bold; }
+.menu button.activa.completada::after { color: #fff; }
+
+.contenido { min-width: 0; }
+
+/* ============ Lecciones ============ */
+.leccion {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+.leccion[hidden] { display: none; }
+
+.nivel {
+  display: inline-block;
+  margin: 0 0 1rem;
+  padding: .1rem .6rem;
+  font-size: .8rem;
+  border-radius: 99px;
+  background: rgba(79, 107, 255, .15);
+  color: var(--primario);
+}
+
+.demo {
+  border: 1px dashed var(--borde);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.ejercicio {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-left: 4px solid var(--exito);
+  background: rgba(47, 166, 106, .08);
+  border-radius: 0 8px 8px 0;
+}
+.ejercicio p, .ejercicio ul { margin-top: 0; }
+.hecho { display: inline-flex; align-items: center; gap: .4rem; cursor: pointer; font-size: .92rem; }
+
+.aviso {
+  padding: .75rem 1rem;
+  border-left: 4px solid #e5a000;
+  background: rgba(229, 160, 0, .1);
+  border-radius: 0 8px 8px 0;
+}
+
+/* ============ Formularios y botones ============ */
+input[type="text"], textarea, select {
+  font: inherit;
+  padding: .5rem .7rem;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  background: var(--fondo);
+  color: var(--texto);
+  width: 100%;
+}
+input:focus, textarea:focus, select:focus { outline: 2px solid var(--primario); outline-offset: 1px; }
+select { width: auto; }
+textarea { resize: vertical; margin-bottom: .5rem; }
+
+.btn {
+  font: inherit;
+  font-size: .92rem;
+  padding: .45rem .9rem;
+  border: 0;
+  border-radius: 6px;
+  background: var(--primario);
+  color: #fff;
+  cursor: pointer;
+  transition: filter .15s, transform .05s;
+}
+.btn:hover { filter: brightness(1.1); }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+.btn-secundario { background: transparent; color: var(--texto); border: 1px solid var(--borde); }
+.btn-peligro { background: var(--peligro); }
+.btn-chico { padding: .15rem .6rem; font-size: .8rem; }
+
+.botones { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+.fila { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.fila input[type="text"] { flex: 1 1 180px; width: auto; }
+.controles { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1rem; }
+.leyenda { color: var(--texto-suave); font-size: .85rem; }
+
+.salida {
+  margin-top: .75rem;
+  padding: .6rem .8rem;
+  background: var(--fondo);
+  border-radius: 6px;
+  min-height: 2.4rem;
+}
+
+/* ============ Lección 1: resaltado ============ */
+.resaltado {
+  background: #fff3a3;
+  color: #1f2937;
+  outline: 2px solid #e5a000;
+  border-radius: 4px;
+}
+
+/* ============ Lección 3: caja ============ */
+.l3-caja {
+  display: grid;
+  place-items: center;
+  height: 110px;
+  background: #4f8cff;
+  color: #fff;
+  font-weight: 600;
+  border: 4px solid transparent;
+  border-radius: 8px;
+  transition: all .25s;
+}
+.l3-caja.activa {
+  border-color: #ffd54a;
+  transform: scale(1.04);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .25);
+}
+
+/* ============ Lección 4 ============ */
+.contador { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.contador-valor { min-width: 3rem; text-align: center; font-size: 1.8rem; font-weight: 700; }
+.l4-zona {
+  display: grid;
+  place-items: center;
+  height: 80px;
+  border-radius: 8px;
+  background: var(--fondo);
+  border: 2px solid var(--borde);
+  transition: all .2s;
+}
+.l4-zona.encima { background: var(--exito); color: #fff; border-color: var(--exito); }
+
+/* ============ Listas dinámicas (lecciones 5 y 7) ============ */
+.lista { list-style: none; margin: 1rem 0 .5rem; padding: 0; display: grid; gap: .4rem; }
+.lista li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .5rem;
+  padding: .5rem .8rem;
+  background: var(--fondo);
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+}
+.lista .texto { flex: 1; cursor: pointer; }
+.lista .hecha .texto { text-decoration: line-through; color: var(--texto-suave); }
+.lista .borrar {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.json { max-height: 160px; font-size: .8rem; }
+
+/* ============ Lección 6: árbol ============ */
+.caja {
+  border: 2px solid var(--borde);
+  border-radius: 8px;
+  padding: .5rem .6rem;
+  margin: .4rem 0 .4rem .8rem;
+  cursor: pointer;
+  background: var(--superficie);
+}
+#l6-arbol > .caja { margin-left: 0; }
+.etiqueta { font-weight: 600; pointer-events: none; }
+.caja.sel { background: var(--primario); border-color: var(--primario); }
+.caja.sel > .etiqueta { color: #fff; }
+.caja.padre { border-color: #e5a000; background: rgba(229, 160, 0, .15); }
+.caja.hijo { border-color: var(--exito); background: rgba(47, 166, 106, .15); }
+.caja.hermano { border-color: #b04fff; background: rgba(176, 79, 255, .13); }
+
+.chip { padding: .1rem .5rem; border-radius: 99px; font-size: .78rem; margin-right: .3rem; border: 2px solid; }
+.chip-sel { border-color: var(--primario); }
+.chip-padre { border-color: #e5a000; }
+.chip-hijo { border-color: var(--exito); }
+.chip-hermano { border-color: #b04fff; }
+
+/* ============ Lección 8: tablero ============ */
+.tablero {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: .8rem;
+  margin-top: .75rem;
+}
+.nota {
+  position: relative;
+  padding: .8rem;
+  min-height: 90px;
+  border-radius: 4px;
+  color: #1f2937;
+  box-shadow: 2px 3px 8px rgba(0, 0, 0, .2);
+  word-break: break-word;
+}
+.nota.amarilla { background: #fff3a3; }
+.nota.rosa { background: #ffc6e5; }
+.nota.verde { background: #c5f0c9; }
+.nota.azul { background: #c2e0ff; }
+.nota .borrar {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-size: .95rem;
+}
+
+/* ============ Paginación y consola ============ */
+.paginacion { display: flex; justify-content: space-between; margin: 1.25rem 0; }
+
+.consola {
+  background: var(--codigo-fondo);
+  color: var(--codigo-texto);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.consola-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .5rem 1rem;
+  border-bottom: 1px solid #243049;
+}
+.consola .btn-secundario { color: var(--codigo-texto); border-color: #3a4a6b; }
+.consola-paneles { display: grid; grid-template-columns: 1fr 1fr; }
+.consola-panel { min-width: 0; }
+.consola-panel + .consola-panel { border-left: 1px solid #243049; }
+.consola-titulo {
+  padding: .35rem 1rem;
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: #8ea0bf;
+  background: rgba(255, 255, 255, .04);
+}
+.consola-titulo span { text-transform: none; letter-spacing: 0; opacity: .7; }
+.codigo-salida {
+  margin: 0;
+  height: 170px;
+  overflow: auto;
+  border-radius: 0;
+  background: transparent;
+  padding: .6rem 1rem;
+  font-size: .82rem;
+  color: #ffd479;
+}
+.consola-salida .con-codigo { cursor: pointer; border-radius: 4px; }
+.consola-salida .con-codigo:hover { background: rgba(255, 255, 255, .06); }
+.consola-salida .seleccionada { background: rgba(123, 146, 255, .22); }
+.consola-salida {
+  height: 170px;
+  overflow-y: auto;
+  padding: .6rem 1rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .82rem;
+}
+.consola-salida .linea { padding: .1rem 0; }
+.consola-salida .hora { color: #6f819f; margin-right: .6rem; }
+.consola-salida .info { color: #8fd0ff; }
+.consola-salida .ok { color: #7be0a3; }
+.consola-salida .aviso-c { color: #ffd479; }
+.consola-vacia { color: #6f819f; }
+
+/* ============ Responsive ============ */
+@media (max-width: 800px) {
+  .layout { grid-template-columns: 1fr; padding: 1rem; }
+  .lateral { position: static; }
+  .menu { grid-template-columns: repeat(2, 1fr); }
+  .consola-paneles { grid-template-columns: 1fr; }
+  .consola-panel + .consola-panel { border-left: 0; border-top: 1px solid #243049; }
+}

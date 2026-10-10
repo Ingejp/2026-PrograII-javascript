@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clase 2 · JavaScript y el DOM</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="cabecera">
+    <div>
+      <h1>Clase 2 · JavaScript y el DOM</h1>
+      <p>Introducción al desarrollo de aplicaciones web</p>
+    </div>
+    <div class="cabecera-acciones">
+      <span id="progreso-texto" class="progreso-texto"></span>
+      <button type="button" id="btn-tema" class="btn btn-secundario">🌙 Modo oscuro</button>
+    </div>
+  </header>
+
+  <div class="progreso"><div id="progreso-barra" class="progreso-barra"></div></div>
+
+  <div class="layout">
+
+    <!-- Menú lateral: lo genera app.js a partir de las secciones .leccion -->
+    <aside class="lateral">
+      <h2>Lecciones</h2>
+      <ol id="menu" class="menu"></ol>
+    </aside>
+
+    <main class="contenido">
+
+      <!-- ============ LECCIÓN 1 ============ -->
+      <section class="leccion" id="leccion-1" data-titulo="Seleccionar elementos" hidden>
+        <h2>1. Seleccionar elementos</h2>
+        <p class="nivel">Nivel básico</p>
+        <p>Antes de cambiar algo en la página, hay que <strong>encontrarlo</strong>. El objeto <code>document</code> representa toda la página y nos da métodos para buscar elementos.</p>
+
+        <pre><code>document.getElementById('titulo');        // por id → un elemento
+document.querySelector('.parrafo');       // por selector CSS → el primero
+document.querySelectorAll('.parrafo');    // por selector CSS → todos (lista)</code></pre>
+
+        <div class="demo">
+          <h3 id="l1-titulo">Soy el título con id="l1-titulo"</h3>
+          <p class="l1-parrafo">Párrafo 1 (clase l1-parrafo)</p>
+          <p class="l1-parrafo">Párrafo 2 (clase l1-parrafo)</p>
+          <p class="l1-parrafo">Párrafo 3 (clase l1-parrafo)</p>
+          <div class="botones">
+            <button type="button" class="btn" id="l1-btn-id">getElementById</button>
+            <button type="button" class="btn" id="l1-btn-uno">querySelector</button>
+            <button type="button" class="btn" id="l1-btn-todos">querySelectorAll</button>
+            <button type="button" class="btn btn-secundario" id="l1-btn-limpiar">Limpiar</button>
+          </div>
+        </div>
+
+        <p><code>querySelector</code> devuelve <em>un</em> elemento; <code>querySelectorAll</code> devuelve una lista (<code>NodeList</code>) que se recorre con <code>forEach</code>.</p>
+
+        <div class="ejercicio">
+          <h3>✏️ Ejercicio</h3>
+          <p>Abre las herramientas del navegador (F12 → Consola) y escribe <code>document.querySelectorAll('h2')</code>. ¿Cuántos encabezados <code>h2</code> hay en esta página?</p>
+          <label class="hecho"><input type="checkbox" data-leccion="1"> Ya lo hice</label>
+        </div>
+      </section>
+
+      <!-- ============ LECCIÓN 2 ============ -->
+      <section class="leccion" id="leccion-2" data-titulo="Contenido y atributos" hidden>
+        <h2>2. Cambiar contenido y atributos</h2>
+        <p class="nivel">Nivel básico</p>
+        <p>Una vez seleccionado un elemento podemos modificar su texto, su HTML interno y sus atributos.</p>
+
+        <pre><code>elemento.textContent = 'Hola';          // texto plano (seguro)
+elemento.innerHTML = '&lt;b&gt;Hola&lt;/b&gt;';     // interpreta HTML
+elemento.setAttribute('href', 'https://...');
+elemento.getAttribute('href');</code></pre>
+
+        <div class="demo">
+          <label for="l2-entrada">Escribe algo (puedes probar con &lt;b&gt;negrita&lt;/b&gt;):</label>
+          <input type="text" id="l2-entrada" value="<b>Hola DOM</b>">
+          <div class="botones">
+            <button type="button" class="btn" id="l2-btn-texto">textContent</button>
+            <button type="button" class="btn" id="l2-btn-html">innerHTML</button>
+          </div>
+          <div id="l2-salida" class="salida">(aquí aparecerá el resultado)</div>
+
+          <hr>
+          <p>Enlace: <a id="l2-enlace" href="https://developer.mozilla.org" target="_blank" rel="noopener">MDN Web Docs</a></p>
+          <div class="botones">
+            <button type="button" class="btn" id="l2-btn-enlace">Cambiar href y texto</button>
+            <button type="button" class="btn btn-secundario" id="l2-btn-leer">Leer href</button>
+          </div>
+        </div>
+
+        <p class="aviso">⚠️ Usa <code>textContent</code> cuando muestres texto que escribió el usuario. <code>innerHTML</code> interpreta etiquetas y puede ser peligroso con datos no confiables.</p>
+
+        <div class="ejercicio">
+          <h3>✏️ Ejercicio</h3>
+          <p>Escribe en el campo <code>&lt;h1&gt;Hola&lt;/h1&gt;</code> y compara lo que muestran <code>textContent</code> e <code>innerHTML</code>. ¿Por qué se ven distintos?</p>
+          <label class="hecho"><input type="checkbox" data-leccion="2"> Ya lo hice</label>
+        </div>
+      </section>
+
+      <!-- ============ LECCIÓN 3 ============ -->
+      <section class="leccion" id="leccion-3" data-titulo="Estilos y clases" hidden>
+        <h2>3. Cambiar estilos y clases</h2>
+        <p class="nivel">Nivel básico</p>
+        <p>Podemos modificar el CSS de dos formas: directamente con <code>style</code>, o (mejor) agregando y quitando <strong>clases</strong> con <code>classList</code>.</p>
+
+        <pre><code>caja.style.backgroundColor = 'tomato';   // estilo en línea
+caja.classList.add('activa');            // agregar clase
+caja.classList.remove('activa');         // quitar clase
+caja.classList.toggle('activa');         // alternar</code></pre>
+
+        <div class="demo">
+          <div id="l3-caja" class="l3-caja">Soy una caja</div>
+          <div class="botones">
+            <button type="button" class="btn" id="l3-btn-clase">classList.toggle('activa')</button>
+            <button type="button" class="btn" id="l3-btn-tema-demo">Modo oscuro de la página</button>
+          </div>
+          <div class="controles">
+            <label>Color de fondo: <input type="color" id="l3-color" value="#4f8cff"></label>
+            <label>Redondeo: <input type="range" id="l3-radio" min="0" max="60" value="8"></label>
+          </div>
+        </div>
+
+        <div class="ejercicio">
+          <h3>✏️ Ejercicio</h3>
+          <p>En <code>styles.css</code> busca la regla <code>.l3-caja.activa</code> y cámbiale el color del borde. Recarga y verifica el cambio.</p>
+          <label class="hecho"><input type="checkbox" data-leccion="3"> Ya lo hice</label>
+        </div>
+      </section>
+
+      <!-- ============ LECCIÓN 4 ============ -->
+      <section class="leccion" id="leccion-4" data-titulo="Eventos" hidden>
+        <h2>4. Eventos</h2>
+        <p class="nivel">Nivel básico → medio</p>
+        <p>Un <strong>evento</strong> es algo que ocurre en la página (un clic, una tecla, enviar un formulario). Con <code>addEventListener</code> decimos qué función ejecutar cuando ocurra.</p>
+
+        <pre><code>boton.addEventListener('click', function (evento) {
+  console.log('Me hicieron clic', evento);
+});
+
+formulario.addEventListener('submit', (e) =&gt; {
+  e.preventDefault();   // evita que la página se recargue
+});</code></pre>
+
+        <div class="demo">
+          <h3>Contador (click)</h3>
+          <div class="contador">
+            <button type="button" class="btn" id="l4-menos">−</button>
+            <span id="l4-valor" class="contador-valor">0</span>
+            <button type="button" class="btn" id="l4-mas">+</button>
+            <button type="button" class="btn btn-secundario" id="l4-reset">Reiniciar</button>
+          </div>
+
+          <hr>
+          <h3>Teclado (keydown)</h3>
+          <input type="text" id="l4-teclas" placeholder="Escribe aquí y mira la consola">
+          <p>Última tecla: <strong id="l4-ultima">—</strong></p>
+
+          <hr>
+          <h3>Formulario (submit)</h3>
+          <form id="l4-form" class="fila">
+            <input type="text" id="l4-nombre" placeholder="Tu nombre" required>
+            <button type="submit" class="btn">Saludar</button>
+          </form>
+          <p id="l4-saludo" class="salida">(esperando…)</p>
+
+          <hr>
+          <h3>Ratón (mouseover / mouseout)</h3>
+          <div id="l4-zona" class="l4-zona">Pasa el mouse por aquí</div>
+        </div>
+
+        <div class="ejercicio">
+          <h3>✏️ Ejercicio</h3>
+          <p>Observa en la consola de abajo el objeto <code>evento</code>. ¿Qué diferencia hay entre <code>evento.key</code> y <code>evento.code</code> al presionar la tecla “a” con y sin mayúsculas?</p>
+          <label class="hecho"><input type="checkbox" data-leccion="4"> Ya lo hice</label>
+        </div>
+      </section>
+
+      <!-- ============ LECCIÓN 5 ============ -->
+      <section class="leccion" id="leccion-5" data-titulo="Crear y eliminar elementos" hidden>
+        <h2>5. Crear y eliminar elementos</h2>
+        <p class="nivel">Nivel medio</p>
+        <p>El DOM no es estático: podemos <strong>crear</strong> elementos desde JavaScript, insertarlos en la página y quitarlos.</p>
+
+        <pre><code>const li = document.createElement('li');   // 1. crear
+li.textContent = 'Nuevo elemento';         // 2. configurar
+lista.appendChild(li);                     // 3. insertar al final
+lista.prepend(li);                         //    o al inicio
+li.remove();                               // eliminar</code></pre>
+
+        <div class="demo">
+          <form id="l5-form" class="fila">
+            <input type="text" id="l5-texto" placeholder="Nuevo elemento" required>
+            <button type="submit" class="btn">Agregar al final</button>
+            <button type="button" class="btn btn-secundario" id="l5-inicio">Agregar al inicio</button>
+          </form>
+          <ul id="l5-lista" class="lista"></ul>
+          <p>Elementos en la lista: <strong id="l5-contador">0</strong></p>
+        </div>
+
+        <div class="ejercicio">
+          <h3>✏️ Ejercicio</h3>
+          <p>Agrega tres elementos y bórralos. Luego abre F12 → Elementos y observa cómo aparecen y desaparecen los <code>&lt;li&gt;</code> en tiempo real.</p>
+          <label class="hecho"><input type="checkbox" data-leccion="5"> Ya lo hice</label>
+        </div>
+      </section>
+
+      <!-- ============ LECCIÓN 6 ============ -->
+      <section class="leccion" id="leccion-6" data-titulo="Recorrer el DOM" hidden>
+        <h2>6. Recorrer el DOM</h2>
+        <p class="nivel">Nivel medio</p>
+        <p>Los elementos forman un <strong>árbol</strong>. Desde uno podemos navegar a su padre, sus hijos y sus hermanos.</p>
+
+        <pre><code>elemento.parentElement;          // el padre
+elemento.children;               // los hijos (elementos)
+elemento.nextElementSibling;     // el hermano siguiente
+elemento.previousElementSibling; // el hermano anterior
+elemento.closest('.caja');       // el ancestro más cercano que coincida</code></pre>
+
+        <div class="demo">
+          <p>Haz clic en cualquier caja:</p>
+          <div id="l6-arbol">
+            <div class="caja" data-nombre="Abuelo">
+              <span class="etiqueta">Abuelo</span>
+              <div class="caja" data-nombre="Padre">
+                <span class="etiqueta">Padre</span>
+                <div class="caja" data-nombre="Hijo A"><span class="etiqueta">Hijo A</span></div>
+                <div class="caja" data-nombre="Hijo B"><span class="etiqueta">Hijo B</span></div>
+                <div class="caja" data-nombre="Hijo C"><span class="etiqueta">Hijo C</span></div>
+              </div>
+              <div class="caja" data-nombre="Tío">
+                <span class="etiqueta">Tío</span>
+                <div class="caja" data-nombre="Primo"><span class="etiqueta">Primo</span></div>
+              </div>
+            </div>
+          </div>
+          <p class="leyenda">
+            <span class="chip chip-sel">seleccionado</span>
+            <span class="chip chip-padre">padre</span>
+            <span class="chip chip-hijo">hijos</span>
+            <span class="chip chip-hermano">hermanos</span>
+          </p>
+          <p id="l6-info" class="salida">(elige una caja)</p>
+        </div>
+
+        <div class="ejercicio">
+          <h3>✏️ Ejercicio</h3>
+          <p>Haz clic en “Hijo B”. ¿Quién es su <code>previousElementSibling</code> y quién su <code>nextElementSibling</code>? ¿Y si haces clic en “Hijo A”?</p>
+          <label class="hecho"><input type="checkbox" data-leccion="6"> Ya lo hice</label>
+        </div>
+      </section>
+
+      <!-- ============ LECCIÓN 7 ============ -->
+      <section class="leccion" id="leccion-7" data-titulo="Delegación y localStorage" hidden>
+        <h2>7. Delegación de eventos y localStorage</h2>
+        <p class="nivel">Nivel medio</p>
+        <p>Si la lista tiene muchos elementos (o se crean dinámicamente), no conviene poner un listener en cada uno. Ponemos <strong>uno solo en el padre</strong> y revisamos <code>evento.target</code>. Además guardamos los datos en el navegador con <code>localStorage</code> para que no se pierdan al recargar.</p>
+
+        <pre><code>// Delegación: un solo listener en la lista
+lista.addEventListener('click', (e) =&gt; {
+  if (e.target.matches('.borrar')) { /* ... */ }
+});
+
+// localStorage solo guarda texto → usamos JSON
+localStorage.setItem('tareas', JSON.stringify(arreglo));
+const guardadas = JSON.parse(localStorage.getItem('tareas')) || [];</code></pre>
+
+        <div class="demo">
+          <form id="l7-form" class="fila">
+            <input type="text" id="l7-texto" placeholder="Nueva tarea" required>
+            <button type="submit" class="btn">Agregar</button>
+            <button type="button" class="btn btn-peligro" id="l7-vaciar">Borrar todo</button>
+          </form>
+          <ul id="l7-lista" class="lista"></ul>
+          <p class="leyenda">Clic en el texto para marcar como hecha · 🗑 para borrar</p>
+          <p><strong>Lo que hay en localStorage:</strong></p>
+          <pre class="json"><code id="l7-json">[]</code></pre>
+        </div>
+
+        <div class="ejercicio">
+          <h3>✏️ Ejercicio</h3>
+          <p>Agrega tareas, recarga la página (F5) y comprueba que siguen ahí. Luego mira F12 → Aplicación → Almacenamiento local.</p>
+          <label class="hecho"><input type="checkbox" data-leccion="7"> Ya lo hice</label>
+        </div>
+      </section>
+
+      <!-- ============ LECCIÓN 8 ============ -->
+      <section class="leccion" id="leccion-8" data-titulo="Reto final" hidden>
+        <h2>8. Reto final: tablero de notas</h2>
+        <p class="nivel">Nivel medio</p>
+        <p>Aquí se junta todo lo visto: seleccionar, eventos, crear/eliminar elementos, clases, delegación y <code>localStorage</code>.</p>
+
+        <div class="demo">
+          <form id="l8-form">
+            <textarea id="l8-texto" rows="2" maxlength="80" placeholder="Escribe una nota (máx. 80 caracteres)" required></textarea>
+            <div class="fila">
+              <select id="l8-color" aria-label="Color de la nota">
+                <option value="amarilla">🟨 Amarilla</option>
+                <option value="rosa">🟪 Rosa</option>
+                <option value="verde">🟩 Verde</option>
+                <option value="azul">🟦 Azul</option>
+              </select>
+              <span id="l8-caracteres" class="leyenda">0 / 80</span>
+              <button type="submit" class="btn">Agregar nota</button>
+              <button type="button" class="btn btn-peligro" id="l8-vaciar">Vaciar tablero</button>
+            </div>
+          </form>
+          <p>Total de notas: <strong id="l8-total">0</strong></p>
+          <div id="l8-tablero" class="tablero"></div>
+        </div>
+
+        <div class="ejercicio">
+          <h3>🏆 Retos extra (hazlos en tu propio código)</h3>
+          <ul>
+            <li>Agrega un botón para <strong>editar</strong> el texto de una nota.</li>
+            <li>Agrega un campo de <strong>búsqueda</strong> que oculte las notas que no coincidan.</li>
+            <li>Agrega un botón de <strong>fijar</strong> que mueva la nota al inicio.</li>
+            <li>Cuenta cuántas notas hay de cada color.</li>
+          </ul>
+          <label class="hecho"><input type="checkbox" data-leccion="8"> Completé al menos un reto</label>
+        </div>
+      </section>
+
+      <!-- Navegación entre lecciones -->
+      <nav class="paginacion">
+        <button type="button" class="btn btn-secundario" id="btn-anterior">← Anterior</button>
+        <button type="button" class="btn" id="btn-siguiente">Siguiente →</button>
+      </nav>
+
+      <!-- Consola visual: aquí se imprime lo que hacen los ejemplos -->
+      <section class="consola" aria-live="polite">
+        <div class="consola-cabecera">
+          <strong>🖥 Consola de la clase</strong>
+          <button type="button" class="btn btn-secundario btn-chico" id="consola-limpiar">Limpiar</button>
+        </div>
+        <div class="consola-paneles">
+          <div class="consola-panel">
+            <div class="consola-titulo">Resultado <span>(clic en una línea para ver su código)</span></div>
+            <div id="consola-salida" class="consola-salida"></div>
+          </div>
+          <div class="consola-panel">
+            <div class="consola-titulo">Código ejecutado</div>
+            <pre class="codigo-salida"><code id="codigo-salida"></code></pre>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
